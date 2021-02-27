@@ -1,14 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, LogBox } from 'react-native';
+/* lib */
+import { getShops } from './src/lib/firebase';
+/* types */
+import { Shop } from './src/types/Shop';
+
+LogBox.ignoreLogs(['Setting a timer']);
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+  const [shops, setShops] = useState<Shop[]>([]);
+
+  useEffect(() => {
+    getFirebaseItems();
+  }, []);
+
+  const getFirebaseItems = async () => {
+    const shops = await getShops();
+    setShops(shops);
+  };
+
+  const shopItems = shops.map((shop, index) => (
+    <View style={{ margin: 10 }} key={index.toString()}>
+      <Text>{shop.name}</Text>
+      <Text>{shop.place}</Text>
     </View>
-  );
+  ));
+
+  return <View style={styles.container}>{shopItems}</View>;
 }
 
 const styles = StyleSheet.create({
