@@ -15,8 +15,8 @@ export default function App() {
   }, []);
 
   const getFirebaseItems = async () => {
-    const shops = await getShops();
-    setShops(shops);
+    const searchedShops = await getShops();
+    setShops(searchedShops);
   };
 
   const shopItems = shops.map((shop, index) => (
